@@ -61,6 +61,8 @@ class HistoricalLocationWeather(object):
 
     self.api_key = api_key
     self.city = city
+    self.start_date = start_date
+    self.end_date = end_date
     self.start_date_datetime = start_date_datetime
     self.end_date_datetime = end_date_datetime
     self.frequency = frequency
@@ -86,29 +88,29 @@ class HistoricalLocationWeather(object):
     monthly_data = pd.DataFrame()
     for i in range(number_days):
       d = dataset[i]
-    astronomy_data = pd.DataFrame(d['astronomy'])
-    hourly_data = pd.DataFrame(d['hourly'])
+      astronomy_data = pd.DataFrame(d['astronomy'])
+      hourly_data = pd.DataFrame(d['hourly'])
 
-    required_keys = ['date', 'maxtempC', 'mintempC', 'totalSnow_cm', 'sunHour', 'uvIndex']
-    subset_d = dict((k, d[k]) for k in required_keys if k in d)
-    weather_data = pd.DataFrame(subset_d, index=[0])
-    data = pd.concat([weather_data.reset_index(drop=True), astronomy_data], axis=1)
-    data = pd.concat([data, hourly_data], axis=1)
-    data = data.fillna(method='ffill')
+      required_keys = ['date', 'maxtempC', 'mintempC', 'totalSnow_cm', 'sunHour', 'uvIndex']
+      subset_d = dict((k, d[k]) for k in required_keys if k in d)
+      weather_data = pd.DataFrame(subset_d, index=[0])
+      data = pd.concat([weather_data.reset_index(drop=True), astronomy_data], axis=1)
+      data = pd.concat([data, hourly_data], axis=1)
+      data = data.fillna(method='ffill')
 
-    data['time'] = data['time'].apply(lambda x: x.zfill(4))
-    data['time'] = data['time'].str[:2]
-    data['date_time'] = pd.to_datetime(data['date'] + ' ' + data['time'])
+      data['time'] = data['time'].apply(lambda x: x.zfill(4))
+      data['time'] = data['time'].str[:2]
+      data['date_time'] = pd.to_datetime(data['date'] + ' ' + data['time'])
 
-    columns_required = ['date_time', 'maxtempC', 'mintempC', 'totalSnow_cm', 'sunHour', 'uvIndex',
+      columns_required = ['date_time', 'maxtempC', 'mintempC', 'totalSnow_cm', 'sunHour', 'uvIndex',
                         'moon_illumination', 'moonrise', 'moonset', 'sunrise', 'sunset',
                         'DewPointC', 'FeelsLikeC', 'HeatIndexC', 'WindChillC', 'WindGustKmph',
                         'cloudcover', 'humidity', 'precipMM', 'pressure', 'tempC', 'visibility',
                         'winddirDegree', 'windspeedKmph']
 
-    data = data[columns_required]
-    data = data.loc[:,~data.columns.duplicated()]
-    monthly_data = pd.concat([monthly_data, data])
+      data = data[columns_required]
+      data = data.loc[:,~data.columns.duplicated()]
+      monthly_data = pd.concat([monthly_data, data])
     return (monthly_data)
 
   def _retrieve_this_city(self, city):
@@ -128,14 +130,13 @@ class HistoricalLocationWeather(object):
     '''
     start_time = datetime.now()
 
-    list_month_begin = pd.date_range(self.start_date_datetime, self.end_date_datetime, freq = 'MS', closed = 'right')
-    list_month_begin = pd.concat([pd.Series(self.start_date_datetime), pd.Series(list_month_begin)], ignore_index = True)
+    list_month_begin = pd.date_range(self.start_date, self.end_date, freq = 'MS', closed = 'right')
+    list_month_begin = pd.concat([pd.Series(pd.to_datetime(self.start_date)), pd.Series(list_month_begin)], ignore_index = True)
 
     list_month_end = pd.date_range(self.start_date_datetime, self.end_date_datetime, freq='M', closed='left')
-    list_month_end = pd.concat([pd.Series(list_month_end), pd.Series(self.end_date_datetime)], ignore_index=True)
+    list_month_end = pd.concat([pd.Series(list_month_end), pd.Series(pd.to_datetime(self.end_date))], ignore_index=True)
 
     total_months = len(list_month_begin)
-
       
     historical_data = pd.DataFrame()
     for m in range(total_months):
@@ -183,9 +184,8 @@ class HistoricalLocationWeather(object):
       dataset.to_csv(self.csv_directory + '/' + self.city + '.csv', header=True, index=True)
       if self.verbose:
         print('\n\nexport ' + self.city + ' completed!\n\n')
-  
+    
     return (dataset)
-
 
 
 if __name__ == '__main__': 
