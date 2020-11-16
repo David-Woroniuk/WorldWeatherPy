@@ -66,4 +66,3 @@ class DetermineListOfAttributes(object):
 
 if __name__ == '__main__':   
   attributes = DetermineListOfAttributes('YOUR API KEY HERE', True).retrieve_list_of_options()
-  print(attributes)
