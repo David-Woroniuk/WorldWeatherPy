@@ -62,7 +62,3 @@ class DetermineListOfAttributes(object):
       print('List of available weather attributes: {}'.format(attribute_list))
 
     return attribute_list
-
-
-if __name__ == '__main__':   
-  attributes = DetermineListOfAttributes('YOUR API KEY HERE', True).retrieve_list_of_options()
