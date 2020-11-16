@@ -187,6 +187,3 @@ class HistoricalLocationWeather(object):
     
     return (dataset)
 
-
-if __name__ == '__main__': 
-  dataset = HistoricalLocationWeather('YOUR API KEY','CITY','YYYY-MM-DD','YYYY-MM-DD',1).retrieve_hist_data()
