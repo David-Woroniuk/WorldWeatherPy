@@ -20,7 +20,7 @@ from WorldWeatherPy import RetrieveByAttribute
 
 #### If you are unsure of the available weather attributes:
 
-```
+```python
 pip install WorldWeatherPy
 from WorldWeatherPy import DetermineListOfAttributes
 attributes = DetermineListOfAttributes(api_key, True).retrieve_list_of_options()
@@ -29,7 +29,7 @@ Returns a list containing all available weather attributes. If 'verbose' is set 
 
 #### If you would like to retrieve standard weather attributes:
 
-```
+```python
 pip install WorldWeatherPy
 from WorldWeatherPy import HistoricalLocationWeather
 dataset = HistoricalLocationWeather(api_key, city, start_date, end_date, frequency).retrieve_hist_data()
@@ -38,7 +38,7 @@ Returns a Pandas DataFrame 'dataset', which contains an array of weather attribu
 
 #### If you would like to retrieve specific weather attributes:
 
-```
+```python
 pip install WorldWeatherPy
 from WorldWeatherPy import RetrieveByAttribute
 dataset = RetrieveByAttribute(api_key, attribute_list, city, start_date, end_date, frequency).retrieve_hist_data()
