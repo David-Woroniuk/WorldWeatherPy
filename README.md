@@ -8,7 +8,7 @@ The DetermineListOfAttributes class returns all weather attributes available for
 ## Installation
 
 From Python:
-```
+```python
 pip install WorldWeatherPy
 from WorldWeatherPy import DetermineListOfAttributes
 from WorldWeatherPy import HistoricalLocationWeather
