@@ -5,6 +5,7 @@ import json
 import pandas as pd
 from datetime import datetime
 import os
+from tqdm import tqdm
 
 class DetermineListOfAttributes(object):
   '''
@@ -12,22 +13,24 @@ class DetermineListOfAttributes(object):
   extraction by the WorldWeatherOnline API. Each of these attributes can be extracted
   using the 'retrieve_hist_data' function of the RetrieveByAttribute class separately,
   or within a list.
-
   -------------------------------Arguments------------------------------------------- 
 
   api_key: the API key obtained from 'https://www.worldweatheronline.com/developer/'. (str)
   verbose: boolean determining printing during data extraction. (bool)
 
-  -------------------------------Returns--------------------------------------------- 
-
+  -------------------------------Returns---------------------------------------------
   attribute_list: a list of attributes which are available from the WWO API. (list)
-
   '''
 
   def __init__(self, api_key, verbose):
 
+    if verbose:
+      print("Checking if input arguments are in the correct format.")
+
     if isinstance(api_key, str) is False:
       raise TypeError("The 'api_key' argument must be a string object. \n Please refer to https://www.worldweatheronline.com/developer/ to generate an API key.")
+    if len(api_key) != 31:
+      raise ValueError("The 'api_key' argument must be a 31 digit string object. \n Please refer to https://www.worldweatheronline.com/developer/ to generate an API key. ")
 
     if isinstance(verbose, bool) is False:
       raise TypeError("The 'verbose argument must be a boolean object.")
@@ -43,7 +46,7 @@ class DetermineListOfAttributes(object):
 
     attribute_list = []
 
-    if self.verbose:
+    if self.verbose:      
       print('Retrieving attribute list...')
 
     url_page = 'http://api.worldweatheronline.com/premium/v1/past-weather.ashx?key=' + self.api_key + '&q=London&format=json&date=2020-01-01&enddate=2020-01-02&tp=1'
