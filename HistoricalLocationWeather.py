@@ -93,7 +93,7 @@ class HistoricalLocationWeather(object):
             monthly_data = pd.concat([monthly_data, data])
         return monthly_data
 
-    def _retrieve_this_city(self, city):
+    def _retrieve_this_city(self, city: str):
         """
         This internal function retrieves the data corresponding to the city
         specified within the input arguments, for the specified frequency between
