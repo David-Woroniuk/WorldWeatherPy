@@ -58,12 +58,12 @@ class HistoricalLocationWeather(object):
     @staticmethod
     def _extract_data(dataset: pd.DataFrame):
         """
-      This internal function extracts data from the output of the
-      _retrieve_this_city internal function below.
+        This internal function extracts data from the output of the
+        _retrieve_this_city internal function below.
 
-      :param dataset: a json file containing extracted data. (json)
-      :returns: monthly_data: a Pandas DataFrame containing the requested weather data. (Pandas DataFrame)
-      """
+        :param dataset: a json file containing extracted data. (json)
+        :returns: monthly_data: a Pandas DataFrame containing the requested weather data. (Pandas DataFrame)
+        """
         number_days = len(dataset)
         monthly_data = pd.DataFrame()
         for i in range(number_days):
@@ -95,15 +95,13 @@ class HistoricalLocationWeather(object):
 
     def _retrieve_this_city(self, city):
         """
-      This internal function retrieves the data corresponding to the city
-      specified within the input arguments, for the specified frequency between
-      the start_date_datetime and end_date_datetime arguments.
+        This internal function retrieves the data corresponding to the city
+        specified within the input arguments, for the specified frequency between
+        the start_date_datetime and end_date_datetime arguments.
 
-      :param city: the city which the user wishes to extract. (string)
-      :return: historical_data: a Pandas DataFrame containing the requested historical data. (Pandas DataFrame)
-
-
-      """
+        :param city: the city which the user wishes to extract. (string)
+        :return: historical_data: a Pandas DataFrame containing the requested historical data. (Pandas DataFrame)
+        """
         start_time = datetime.now()
 
         list_month_begin = pd.date_range(self.start_date, self.end_date, freq='MS', closed='right')
@@ -144,12 +142,12 @@ class HistoricalLocationWeather(object):
 
     def retrieve_hist_data(self):
         """
-      This function calls the above internal functions, collecting the data from the
-      WorldWeatherOnline API. If a csv directory is provided, a csv file shall be generated
-      and stored for this city. Additionally, a dataframe 'dataset' is materialised.
+        This function calls the above internal functions, collecting the data from the
+        WorldWeatherOnline API. If a csv directory is provided, a csv file shall be generated
+        and stored for this city. Additionally, a dataframe 'dataset' is materialised.
 
-      :returns: dataset: a Pandas DataFrame containing the requested historical data. (Pandas DataFrame)
-      """
+        :returns: dataset: a Pandas DataFrame containing the requested historical data. (Pandas DataFrame)
+        """
         if self.verbose:
             print('\n\nRetrieving weather data for ' + self.city + '\n\n')
         dataset = self._retrieve_this_city(self.city)
